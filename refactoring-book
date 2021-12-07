@@ -1,0 +1,62 @@
+### Refactoring: Improving the Design of Existing Code (Martin Fowler)
+This book has great refactoring examples for Java. I have tried to adapt them to Typescript.
+
+Chapter 6: Composing Methods
+
+## Extract method
+We have a method that does multiple things also the seconr part of the functionality could be grouped into a reusable function.
+
+Before:
+
+printLabel(sticker: Sticker): void {
+  printBanner();
+
+  // save print details for statistics
+  window.localStorage.setItem('sticker', sticker);
+  this.stickerService.save(sticker);
+}
+
+After:
+
+printLabel(sticker: Sticker): void {
+  printBanner();
+  saveStickerData();
+}
+
+saveStickerData(): void {
+  // save print details for statistics
+  window.localStorage.setItem('sticker', sticker);
+  this.stickerService.save(sticker);
+}
+
+Most common complication to this refactoring shared variables. Usually large methods share some common data between the fnctions so you might need to create temporary variables for that.
+
+
+## Inline method
+Sometimes method can be as descriptive as the method name. In those cases you can inline method.
+
+Before:
+
+getRating(): number {
+  return (moreThanFiveLateDeliveries()) ? 2 : 1;
+}
+
+After:
+
+getRating(): number {
+  return this.numberOfLateDeliveries > 5 ? 2 : 1;
+}
+
+
+## Inline temp
+You have a temporary variable that is not very useful.
+
+Before:
+
+basePrice: number = order.basePrice();
+return (basePrice > 1000);
+
+
+After:
+
+return (order.basePrice() > 1000);
